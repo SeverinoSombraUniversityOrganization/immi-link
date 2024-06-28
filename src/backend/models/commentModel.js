@@ -2,12 +2,12 @@ const mongoose = require('../services/databaseService');
 const Schema = mongoose.Schema;
 
 const commentSchema = new Schema({
-  post_id: {
+  postId: {
     type: Schema.Types.ObjectId,
     ref: 'Post',
     required: true,
   },
-  user_id: {
+  userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
@@ -16,7 +16,7 @@ const commentSchema = new Schema({
     type: String,
     required: true,
   },
-  created_at: {
+  createdAt: {
     type: Date,
     default: Date.now,
   },

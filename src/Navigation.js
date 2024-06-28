@@ -3,10 +3,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
 import FeedScreen from './screens/FeedScreen.js';
+import ProfileScreen from './screens/ProfileScreen.js';
 import CreateUserScreen from './screens/CreateUserScreen';
-import CreateFuelScreen from './screens/CreateFuelScreen';
-import UpdateFuelScreen from './screens/UpdateFuelScreen';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import CreatePostScreen from './screens/CreatePostScreen.js';
+import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 
 const Stack = createNativeStackNavigator();
@@ -18,6 +18,13 @@ const Navigation = () => {
     setIsLoggedUser(null);
   };
 
+  const handleProfile = (userId, username) => {
+    navigation.navigate('ProfileScreen', {
+      userId: userId,
+      username: username,
+    });
+  };
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -26,10 +33,16 @@ const Navigation = () => {
             name="Feed"
             options={{
               headerTitle: () => (
-                <View style={styles.userInfo}>
-                  <Text style={styles.username}>{isLoggedUser.user.username}</Text>
+                <View style={styles.headerContainer}>
+                   <TouchableOpacity style={styles.headerContainer}>
+                    <Image
+                      source={{ uri: isLoggedUser.user.profilePhoto }}
+                      style={styles.imageHeader}
+                    />
+                    <Text style={styles.username}>{isLoggedUser.user.username}</Text>
+                  </TouchableOpacity>
                   <TouchableOpacity onPress={handleLogout}>
-                    <FontAwesome name="sign-out" size={20} color="#003f5c" />
+                    <FontAwesome name="sign-out" size={20}  />
                   </TouchableOpacity>
                 </View>
               ),
@@ -56,12 +69,14 @@ const Navigation = () => {
         />
         <Stack.Screen
           name="CreatePost"
-          component={CreateFuelScreen}
-        />
+        >
+          {props => <CreatePostScreen {...props} isLoggedUser={isLoggedUser} />}
+        </Stack.Screen>
         <Stack.Screen
-          name="UpdateFuel"
-          component={UpdateFuelScreen}
-        />
+          name="ProfileScreen"
+        >
+          {props => <ProfileScreen {...props} isLoggedUser={isLoggedUser} />}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -74,6 +89,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     paddingTop: 40,
+  },
+  headerContainer: {
+    flexDirection: 'row', 
+    alignItems: 'center',
+  },
+  imageHeader: {
+    width: 35,
+    height: 35,
+    marginRight: 5,
+    borderRadius: 25,
   },
   header: {
     position: 'absolute',
@@ -96,7 +121,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   username: {
-    color: '#003f5c',
     fontWeight: 'bold',
     marginRight: 10,
     textTransform: 'capitalize',

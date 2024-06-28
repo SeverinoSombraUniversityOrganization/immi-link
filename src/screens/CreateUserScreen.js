@@ -6,6 +6,7 @@ import { CommonActions } from '@react-navigation/native';
 export default function CreateUserScreen(props) {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
+  const [profilePhoto, setProfilePhoto] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -20,7 +21,7 @@ export default function CreateUserScreen(props) {
       return;
     }
 
-    userService.create({name, username, password})
+    userService.create({name, username, password, profilePhoto})
       .then(user => {
         setIsLoading(false); 
         props.navigation.dispatch(
@@ -61,6 +62,16 @@ export default function CreateUserScreen(props) {
           onChangeText={(text) => setUsername(text)}
         />
       </View>
+
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.inputText}
+          placeholder="Profile Photo Url"
+          placeholderTextColor="#bdc3c7"
+          onChangeText={(text) => setProfilePhoto(text)}
+        />
+      </View>
+
 
       <View style={styles.inputView}>
         <TextInput

@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
-import postService from '../services/FuelService'; 
+import postService from '../services/PostService'; 
 import { CommonActions } from '@react-navigation/native';
 
-export default function CreateUserScreen(props) {
-  const [name, setName] = useState('');
+export default function CreatePostScreen(props) {
+  const isLoggedUser = props.isLoggedUser;
+
+  const [content, setContent] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleCreatePost = () => {
     setIsLoading(true); 
+    const userId = isLoggedUser.user.id
+    const username = isLoggedUser.user.username
+    const userProfilePhoto = isLoggedUser.user.profilePhoto
 
-    postService.create({name})
+    postService.create({content, userId, username, userProfilePhoto})
       .then(user => {
         setIsLoading(false); 
         props.navigation.dispatch(
@@ -38,13 +43,15 @@ export default function CreateUserScreen(props) {
       <View style={styles.inputView}>
         <TextInput
           style={styles.inputText}
-          placeholder="Name"
-          placeholderTextColor="#003f5c"
-          onChangeText={(text) => setName(text)}
+          placeholder="Say what you are thinking..."
+          placeholderTextColor="#bdc3c7"
+          onChangeText={(text) => setContent(text)}
+          multiline={true}
+          numberOfLines={4}
         />
       </View>
 
-      <TouchableOpacity style={styles.loginBtn} onPress={handleCreatePost} disabled={isLoading}>
+      <TouchableOpacity style={styles.Btn} onPress={handleCreatePost} disabled={isLoading}>
         {isLoading ? (
           <ActivityIndicator size="small" color="#ffffff" />
         ) : (
@@ -59,32 +66,32 @@ export default function CreateUserScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#003f5c',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
   logo: {
     fontWeight: 'bold',
     fontSize: 50,
-    color: '#fb5b5a',
+    color: '#3498db',
     marginBottom: 40,
   },
   inputView: {
     width: '80%',
     backgroundColor: '#465881',
     borderRadius: 25,
-    height: 50,
+    backgroundColor: '#ecf0f1',
     marginBottom: 20,
     justifyContent: 'center',
     padding: 20,
   },
   inputText: {
-    height: 50,
-    color: 'white',
+    color: '#003f5c',
+    textAlignVertical: 'top', 
   },
-  loginBtn: {
+  Btn: {
     width: '80%',
-    backgroundColor: '#fb5b5a',
+    backgroundColor: '#3498db',
     borderRadius: 25,
     height: 50,
     alignItems: 'center',

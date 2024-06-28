@@ -2,10 +2,17 @@ const mongoose = require('../services/databaseService');
 const Schema = mongoose.Schema;
 
 const postSchema = new Schema({
-  user_id: {
+  userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
+  },
+  username: {
+    type: String,
+    required: true,
+  },
+  userProfilePhoto: {
+    type: String, 
   },
   content: {
     type: String,
@@ -18,7 +25,7 @@ const postSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
   }],
-  created_at: {
+  createdAt: {
     type: Date,
     default: Date.now,
   },

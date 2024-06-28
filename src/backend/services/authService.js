@@ -15,7 +15,7 @@ class AuthService {
                 throw new AuthError('Invalid credentials');
             }
 
-            const { id, name } = user;
+            const { id, name, profilePhoto} = user;
 
             const token = jwt.sign({ id, name, username }, jwtConfig.auth.secret, {
                 expiresIn: jwtConfig.auth.expiresIn,
@@ -27,6 +27,7 @@ class AuthService {
                     id,
                     name,
                     username,
+                    profilePhoto,
                 },
                 token,
             };

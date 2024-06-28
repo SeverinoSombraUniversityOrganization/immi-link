@@ -3,7 +3,6 @@ const AuthError = require('../exceptions/authError');
 
 class AuthController {
     async create(req, res) {
-        console.log(req.body)
         const { username, password } = req.body;
         try {
             const { user, token } = await authService.signIn(username, password);
